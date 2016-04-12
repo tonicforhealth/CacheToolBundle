@@ -24,9 +24,4 @@ interface ClearerInterface
      */
     public function clear();
 
-    /**
-     * Get name of the cache
-     * @return string
-     */
-    public function getName();
 }

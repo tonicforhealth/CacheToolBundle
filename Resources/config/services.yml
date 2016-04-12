@@ -6,6 +6,7 @@ parameters:
     cachetool.proxy.apc.class: CacheTool\Proxy\ApcProxy
     cachetool.proxy.opcache.class: CacheTool\Proxy\OpcacheProxy
     cachetool.cache_clearer.opcache.class: CacheTool\Bundle\CacheClearer\Clearer\Opcache
+    cachetool.cache_clearer.apc.class: CacheTool\Bundle\CacheClearer\Clearer\Apc
     cachetool.cache_clearer.class: CacheTool\Bundle\CacheClearer\CacheClearer
 
 services:
@@ -48,9 +49,16 @@ services:
            - @cachetool
            - %cachetool.opcache%
 
+    cachetool.cache_clearer.apc:
+            class: %cachetool.cache_clearer.apc.class%
+            arguments:
+               - @cachetool
+               - %cachetool.apc%
+
     cachetool.cache_clearer:
         class: %cachetool.cache_clearer.class%
         arguments:
             - @cachetool.cache_clearer.opcache
+            - @cachetool.cache_clearer.apc
 
 

@@ -11,9 +11,9 @@ namespace CacheTool\Bundle\CacheClearer\Clearer;
 use CacheTool\CacheTool;
 
 /**
- * Class Opcache
+ * Class Apc
  */
-class Opcache implements ClearerInterface
+class Apc implements ClearerInterface
 {
     /**
      * @var CacheTool
@@ -21,15 +21,20 @@ class Opcache implements ClearerInterface
     protected $cacheTool;
 
     /**
+     * @var boolean
+     */
+    protected $apcEnabled;
+
+    /**
      * Opcache constructor.
      *
      * @param CacheTool $cacheTool
-     * @param bool      $opcacheEnabled
+     * @param bool      $apcEnabled
      */
-    public function __construct(CacheTool $cacheTool, $opcacheEnabled)
+    public function __construct(CacheTool $cacheTool, $apcEnabled)
     {
         $this->cacheTool = $cacheTool;
-        $this->opcacheEnabled = $opcacheEnabled;
+        $this->apcEnabled = $apcEnabled;
     }
 
     /**
@@ -39,20 +44,20 @@ class Opcache implements ClearerInterface
      */
     public function isEnabled()
     {
-        return ($this->opcacheEnabled) ? true : false;
+        return ($this->apcEnabled) ? true : false;
     }
 
     /**
-     * Clears the cache
+     * Clears APC cache
      *
      * @return bool or \RuntimeException
      */
     public function clear()
     {
-        $status = $this->cacheTool->opcache_reset();
+        $status = $this->cacheTool->apc_clear_cache();
 
         if (!$status) {
-            throw new \RuntimeException('opcache_reset(): No Opcache status info available. Probably opcache.enabled=0 in php.ini. Please disable opcache in your config.yml to avoid this exception');
+            throw new \RuntimeException('opcache_reset(): No Apc status info available. Probably apc.enabled=0 in php.ini. Please disable apc in your config.yml to avoid this exception');
         }
 
         return $status;
